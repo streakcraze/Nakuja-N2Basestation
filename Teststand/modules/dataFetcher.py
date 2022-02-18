@@ -10,6 +10,7 @@ import numpy as np
 import random
 from datetime import datetime
 from modules.drive import uploadToDrive
+from modules.logData import Publish
   
 class FetchData(threading.Thread):
   
@@ -21,6 +22,7 @@ class FetchData(threading.Thread):
         super(FetchData, self).__init__(*args, **kwargs)
         self._stop = threading.Event()
         self._ser = ser
+        self.publisher = Publish()
   
     # function using _stop function
     def stop(self):
@@ -37,6 +39,7 @@ class FetchData(threading.Thread):
         while True:
             #Read data from serial - Stays in this loop forever.
             val = self._ser.readline().decode('utf-8').rstrip()
+            self.publisher.Publish(val)
             allPoints.append(val)
             time.sleep(0.0125)
             if self.stopped():
