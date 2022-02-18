@@ -1,4 +1,3 @@
-GH_REPO = https://github.com/QUALIS-LABS/ujuziTest.git
 C_DIR = chronograf/
 I_DIR = influxdb/
 K_DIR = kapacitor/
