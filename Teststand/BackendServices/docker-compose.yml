@@ -104,16 +104,5 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_SECURITY_ALLOW_EMBEDDING=true
-        #    env_file:
-            #- 'env.grafana'
     user: "0"
-  
-  #loudml:
-  #  image: loudml/loudml:1.6.0
-  #  volumes:
-  #    - ./loudml/loudml.yml:/etc/loudml/config.yml:ro
-  #    - var_loudml
-  #  ports:
-  #    - "8077:8077"
-  #  depends_on:
-  #    - influxdb
+
