@@ -3,8 +3,8 @@
 '''
 import RPi.GPIO as GPIO
 from flask import Flask, render_template, request
-from Services.dataFetcher.ignition import *
-from Services.dataFetcher.dataFetcher import *
+from ignition import *
+from dataFetcher import *
 import board
 import neopixel
 import serial
