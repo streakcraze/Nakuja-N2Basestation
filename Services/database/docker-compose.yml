@@ -16,7 +16,7 @@ services:
       - "1883:1883"
 
   influxdb:
-    image: influxdb:1.7-alpine
+    image: influxdb:latest
     container_name: nakuja-influxdb
     volumes:
       - ./influxdb/data:/var/lib/influxdb
