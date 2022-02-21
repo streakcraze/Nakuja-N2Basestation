@@ -2,15 +2,15 @@
 # Python program killing
 # a thread using ._stop()
 # function
-  
+ 
 import time
 import threading
 import RPi.GPIO as GPIO
 import numpy as np
 import random
 from datetime import datetime
-from Services.dataFetcher.logData import Publish
-  
+from logData import Publish
+
 class FetchData(threading.Thread):
   
     # Thread class with a _stop() method. 

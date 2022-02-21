@@ -23,7 +23,7 @@ ledRed = 19
 pixels = neopixel.NeoPixel(board.D18, 8)
 
 #set up serial
-ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
 ser.flush()
 
 #initialize GPIO status variables
