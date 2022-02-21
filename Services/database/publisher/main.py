@@ -22,7 +22,7 @@ client.on_publish = on_publish
 
 client.username_pw_set(username="nakuja",password="aVesSaVQVKjE8JCKrpTEheYERDWdfM")
 print("Connecting...")
-client.connect("0.0.0.0", 1883, 10)
+client.connect("192.168.137.167", 1883, 10)
 
 counter = 0
 def job():
