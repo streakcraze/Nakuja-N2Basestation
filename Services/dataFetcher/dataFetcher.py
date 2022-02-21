@@ -9,7 +9,7 @@ import RPi.GPIO as GPIO
 import numpy as np
 import random
 from datetime import datetime
-from dataFetcher.logData import Publish
+from Services.dataFetcher.logData import Publish
   
 class FetchData(threading.Thread):
   
