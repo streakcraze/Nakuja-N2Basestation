@@ -9,8 +9,8 @@ from datetime import datetime
 from lib import setup_logging
 
 # Setup as environment variable
-WRITE_FILE_DURATION=5
-ESTIMATED_DURATION=60
+WRITE_FILE_DURATION=10
+ESTIMATED_DURATION=20
 
 class FetchData:
 
@@ -18,7 +18,7 @@ class FetchData:
         self.logger = logger
         self.serial = serial.Serial(port='/dev/ttyUSB0', baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1)
         self.publisher = None
-        self.stopped = False
+        self.running = True
         self.dataqueue = queue.Queue()
         # TODO implement cython arrays to boost the efficiency
         self.datapoints = []
@@ -26,7 +26,7 @@ class FetchData:
         
     def save_data(self):
         self.logger.info("Started saving data thread")
-        while True:
+        while self.running:
             time.sleep(1)
             while not self.dataqueue.empty():
                 datapoints = self.dataqueue.get()
@@ -36,7 +36,7 @@ class FetchData:
 
     def read_data(self):
         self.logger.info("Started reading data thread")
-        while True:
+        while self.running:
             start_time = time.time()
             elapsed_time = 0
             while elapsed_time <= WRITE_FILE_DURATION:
@@ -46,8 +46,6 @@ class FetchData:
             self.dataqueue.put(self.datapoints)
             self.datapoints = []
             self.logger.debug("Sent batched data to queue")
-            if self.stopped:
-                return
     
     def run(self):
         self.logger.info("Started reading serial service")
@@ -57,11 +55,13 @@ class FetchData:
         self.savethread.setDaemon(True)
         self.readthread.start()
         self.savethread.start()
-        self.readthread.join()
-        
+    
+    # TODO setup stop after read thread has finished
     def stop(self):
         self.logger.info("Stopped Service")
-        self.stopped = True
+        self.running = False
+        raise UserWarning("Stopped Service")
+
 
 def main(logger):
     fetch_data = FetchData(logger = logger)

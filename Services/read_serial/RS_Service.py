@@ -44,6 +44,9 @@ check_running_instance(filename = script_name)
 while True:
     try:
         main(logger=logger)
-    except Exception:
+    except UserWarning as warn:
+        logger.error(warn)
+        break
+    else:
         logger.error(format_exc_for_journald(traceback.format_exc(), indent_lines=False))
         time.sleep(10)
