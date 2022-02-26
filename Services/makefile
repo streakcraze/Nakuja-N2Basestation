@@ -9,7 +9,6 @@ define start_service
 	$(eval svc=$(subst start_,,$(1)))
 	sudo systemctl stop $(svc).service
 	sudo cp $(svc)/$(svc).service /etc/systemd/system/
-	sudo systemctl enable $(svc).service
 	sudo systemctl start $(svc).service
 endef
 

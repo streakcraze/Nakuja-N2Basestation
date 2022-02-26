@@ -18,15 +18,8 @@ ExecStart=/home/pi/VENVS/n2basestation/bin/python3 /home/pi/NakujaN2/n2Basestati
 Environment="PYTHONUNBUFFERED=x"
 
 # Uncomment this to see debug messages
-Environment="DEBUG=true"
+# Environment="DEBUG=true"
 
 # If the script ever dies, restart it
 Restart=always
 RestartSec=30
-
-###################
-# Install Section #
-###################
-
-[Install]
-WantedBy=multi-user.target
