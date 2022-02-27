@@ -1,6 +1,8 @@
 [Unit]
 
 Description=Read the serial port for data from the load cell
+After=docker_backend.service
+Requires=docker_backend.service
 
 ###################
 # Service Section #

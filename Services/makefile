@@ -1,4 +1,4 @@
-SERVICES = read_serial
+SERVICES = read_serial docker_backend
 START = $(addprefix start_,$(SERVICES))
 LOGS = $(addprefix logs_,$(SERVICES))
 STATUS = $(addprefix status_,$(SERVICES))
