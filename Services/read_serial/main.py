@@ -7,17 +7,18 @@ import logging
 import numpy as np
 from datetime import datetime
 from lib import setup_logging
+from publisher import TestPublisher
 
 # Setup as environment variable
-WRITE_FILE_DURATION=10
-ESTIMATED_DURATION=20
+WRITE_FILE_DURATION=60
+ESTIMATED_DURATION=86400
 
 class FetchData:
 
     def __init__(self, logger):
         self.logger = logger
         self.serial = serial.Serial(port='/dev/ttyUSB0', baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1)
-        self.publisher = None
+        self.publisher = TestPublisher(logger = self.logger)
         self.running = True
         self.dataqueue = queue.Queue()
         # TODO implement cython arrays to boost the efficiency
@@ -42,6 +43,7 @@ class FetchData:
             while elapsed_time <= WRITE_FILE_DURATION:
                 val = self.serial.readline().decode('utf-8').rstrip()
                 self.datapoints.append(val)
+                self.publisher.run(val)
                 elapsed_time = time.time() - start_time
             self.dataqueue.put(self.datapoints)
             self.datapoints = []
