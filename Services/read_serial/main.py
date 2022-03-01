@@ -17,7 +17,7 @@ class FetchData:
 
     def __init__(self, logger):
         self.logger = logger
-        self.serial = serial.Serial(port='/dev/ttyUSB0', baudrate=115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1)
+        self.serial = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
         self.publisher = TestPublisher(logger = self.logger)
         self.running = True
         self.dataqueue = queue.Queue()
@@ -41,7 +41,14 @@ class FetchData:
             start_time = time.time()
             elapsed_time = 0
             while elapsed_time <= WRITE_FILE_DURATION:
-                val = self.serial.readline().decode('utf-8').rstrip()
+                try:    
+                    val = self.serial.readline().decode('utf-8').rstrip()
+                except UnicodeDecodeError as e:
+                    self.logger.error(e)
+                    val = 0.0
+                except ValueError as e:
+                    self.logger.error(e)
+                    val = 0.0
                 self.datapoints.append(val)
                 self.publisher.run(val)
                 elapsed_time = time.time() - start_time
@@ -69,4 +76,4 @@ def main(logger):
     fetch_data = FetchData(logger = logger)
     fetch_data.run()
     time.sleep(ESTIMATED_DURATION)
-    fetch_data.stop()
+    # fetch_data.stop()

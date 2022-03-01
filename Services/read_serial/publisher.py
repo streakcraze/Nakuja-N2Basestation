@@ -5,7 +5,7 @@ import schedule
 import time
 from influxdb import InfluxDBClient
 
-TIME_PERIOD = 0.001
+TIME_PERIOD = 0.1
 
 # TODO place in utils folder
 class TestPublisher:
@@ -53,7 +53,7 @@ class TestPublisher:
         topic = "sensorData/teststand"
         pub_data = {
             "time": time.ctime(),
-            "data": data,
+            "data": float(data),
             "frequency": 1/TIME_PERIOD,
             "time_to_run": self.time_to_run
         }
