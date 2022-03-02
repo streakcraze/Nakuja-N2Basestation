@@ -76,4 +76,4 @@ def main(logger):
     fetch_data = FetchData(logger = logger)
     fetch_data.run()
     time.sleep(ESTIMATED_DURATION)
-    # fetch_data.stop()
+    fetch_data.stop()

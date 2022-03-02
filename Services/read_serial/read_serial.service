@@ -24,4 +24,4 @@ Environment="DEBUG=true"
 
 # If the script ever dies, restart it
 Restart=always
-# RestartSec=30
+RestartSec=30
