@@ -6,10 +6,13 @@ import os
 
 logger = logging.getLogger(f"main.{__name__}")
 
-# TODO add in utils
+
+# TODO add in combined utils
 def setup_logging(name, debug):
     """
     Setups logging for the process
+    :type name: string
+    :type debug: string
     """
     filename = "{}/{}.log".format(os.path.dirname(__file__), str(name).lower())
     logger = logging.getLogger(name)
@@ -37,6 +40,8 @@ def format_exc_for_journald(ex, indent_lines=False):
         hard to read python traceback messages. This tricks journald into
         not removing leading whitespace by adding a dot at the beginning of
         every line
+        :type indent_lines: bool
+
     """
 
     result = ''
@@ -47,14 +52,16 @@ def format_exc_for_journald(ex, indent_lines=False):
             result += "." + line + "\n"
     return result.rstrip()
 
+
 def signal_handler(*_):
     logger.debug("\nExiting...")
     sys.exit(0)
 
+
 def signalhandler():
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
-    
+
 
 def check_running_instance(filename):
     # Since systemd will never run 2 instances of a service at once, the only

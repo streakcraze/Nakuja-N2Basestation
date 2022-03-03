@@ -58,8 +58,6 @@ services:
     links:
     - influxdb
     environment:
-      - GF_SECURITY_ADMIN_USER=nakuja
-      - GF_SECURITY_ADMIN_PASSWORD=SJfhaWq5DpQYn8hGjPuJQR2TeBv5CW
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_SECURITY_ALLOW_EMBEDDING=true
     user: "0"

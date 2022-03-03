@@ -32,14 +32,13 @@ else:
 script_name = os.path.basename(__file__)
 current_dir = os.path.dirname(__file__)
 
-
 # Get logger
-logger = setup_logging(name = script_name, debug = DEBUG)
+logger = setup_logging(name=script_name, debug=DEBUG)
 
 signalhandler()
 
 # Check if another instance already running #
-check_running_instance(filename = script_name)
+check_running_instance(filename=script_name)
 
 while True:
     try:
