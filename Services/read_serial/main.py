@@ -3,7 +3,6 @@ import os
 import time
 import queue
 import threading
-import logging
 import numpy as np
 from datetime import datetime
 from lib import setup_logging
@@ -16,6 +15,7 @@ ESTIMATED_DURATION=86400
 class FetchData:
 
     def __init__(self, logger):
+        """"""
         self.logger = logger
         self.serial = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
         self.publisher = TestPublisher(logger = self.logger)
@@ -24,7 +24,7 @@ class FetchData:
         # TODO implement cython arrays to boost the efficiency
         self.datapoints = []
         self.cwd = os.path.dirname(__file__)
-        
+
     def save_data(self):
         self.logger.info("Started saving data thread")
         while self.running:
@@ -55,7 +55,9 @@ class FetchData:
             self.dataqueue.put(self.datapoints)
             self.datapoints = []
             self.logger.debug("Sent batched data to queue")
-    
+            if self.stopped:
+                return
+
     def run(self):
         self.logger.info("Started reading serial service")
         self.readthread = threading.Thread(target=self.read_data)
@@ -64,16 +66,17 @@ class FetchData:
         self.savethread.setDaemon(True)
         self.readthread.start()
         self.savethread.start()
-    
-    # TODO setup stop after read thread has finished
+        self.readthread.join()
+
     def stop(self):
         self.logger.info("Stopped Service")
         self.running = False
         raise UserWarning("Stopped Service")
 
 
+
 def main(logger):
-    fetch_data = FetchData(logger = logger)
+    fetch_data = FetchData(logger=logger)
     fetch_data.run()
     time.sleep(ESTIMATED_DURATION)
     fetch_data.stop()
