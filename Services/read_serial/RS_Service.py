@@ -45,6 +45,7 @@ while True:
         main(logger=logger)
     except UserWarning as warn:
         logger.error(warn)
+        break
     else:
         logger.error(format_exc_for_journald(traceback.format_exc(), indent_lines=False))
         time.sleep(10)

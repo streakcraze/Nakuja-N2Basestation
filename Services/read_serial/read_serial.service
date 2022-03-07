@@ -19,5 +19,5 @@ Environment="PYTHONUNBUFFERED=x"
 Environment="DEBUG=true"
 
 # If the script ever dies, restart it
-Restart=always
-RestartSec=30
+# Restart=always
+# RestartSec=30
