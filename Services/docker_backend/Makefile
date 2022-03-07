@@ -1,7 +1,3 @@
-C_DIR = chronograf/
-I_DIR = influxdb/
-K_DIR = kapacitor/
-
 clean: stop remove-files
 
 all: clean pull build start
@@ -21,7 +17,6 @@ stop:
 remove-files:
 	docker system prune -a
 	docker volume prune
-	[ -d $(C_DIR) ] && echo exists && rm -rf $(C_DIR) $(I_DIR) $(K_DIR) || echo not exists
 
 logs:
 	watch docker-compose logs
