@@ -10,7 +10,7 @@ Requires=docker_backend.service
 Type=simple
 
 # Main task
-ExecStart=/home/pi/VENVS/n2basestation/bin/python3 /home/pi/NakujaN2/n2Basestation/Services/read_serial/RS_Service.py
+ExecStart=/home/pi/VENVS/n2basestation/bin/python3 /home/pi/Nakuja/n2Basestation/Services/read_serial/RS_Service.py
 
 # Required to see Python output in logs
 Environment="PYTHONUNBUFFERED=x"
