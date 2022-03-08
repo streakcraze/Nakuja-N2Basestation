@@ -5,20 +5,16 @@ import time
 from main import Operation
 from lib import format_exc_for_journald, setup_logging, signalhandler, check_running_instance
 import flask
-from flask import request, jsonify
+from flask import jsonify
 import logging
 
 app = flask.Flask(__name__)
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
-
-# log = logging.getLogger('werkzeug')
-# log.disabled = True
-# app.logger.disabled = True
+log.disabled = True
+app.logger.disabled = True
 
 # TODO there is a big on environment variables fix it
-
-
 if "DEBUG" in os.environ:
     if os.environ["DEBUG"].lower() == "true":
         DEBUG = True
@@ -49,30 +45,35 @@ check_running_instance(filename=script_name)
 def home():
     return "Head over to /api"
 
+
 @app.route('/api', methods=['GET'])
 def api_all():
-    val = [{"endpoint": "/api/start_ignition", "description" : "starts ignition"},
-           {"endpoint": "/api/stop_ignition", "description" : "stops ignition"},
-           {"endpoint": "/api/start_logging", "description" : "starts logging"},
-           {"endpoint": "/api/stop_logging", "description" : "stops logging"}
+    val = [{"endpoint": "/api/start_ignition", "description": "starts ignition"},
+           {"endpoint": "/api/stop_ignition", "description": "stops ignition"},
+           {"endpoint": "/api/start_logging", "description": "starts logging"},
+           {"endpoint": "/api/stop_logging", "description": "stops logging"}
            ]
     return jsonify(val)
+
 
 @app.route('/api/start_ignition', methods=['GET'])
 def start_ignition():
     resp = ops.startignition()
     return jsonify(resp)
 
+
 @app.route('/api/stop_ignition', methods=['GET'])
 def stop_ignition():
     resp = ops.stopignition()
-    return jsonify(resp)      
+    return jsonify(resp)
+
 
 @app.route('/api/start_logging', methods=['GET'])
 def start_logging():
     resp = ops.startlogging()
     return jsonify(resp)
-    
+
+
 @app.route('/api/stop_logging', methods=['GET'])
 def stop_logging():
     resp = ops.stoplogging()
