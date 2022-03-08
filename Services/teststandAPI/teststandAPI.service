@@ -11,7 +11,7 @@ Type=simple
 
 # TODO figure out to stop using the shell script
 # Main task
-ExecStart=/home/pi/VENVS/n2basestation/bin/python3 /home/pi/NakujaN2/n2Basestation/Services/teststandAPI/TSAPI_Service.py
+ExecStart=/home/pi/VENVS/n2basestation/bin/python3 /home/pi/Nakuja/n2Basestation/Services/teststandAPI/TSAPI_Service.py
 
 # Required to see Python output in logs
 Environment="PYTHONUNBUFFERED=x"

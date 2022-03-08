@@ -5,7 +5,7 @@ import sys
 import os
 from logging import Logger
 
-logger = logging.getLogger(f"main.{__name__}")
+loggere = logging.getLogger(f"main.{__name__}")
 
 
 # TODO add in combined utils
@@ -55,7 +55,7 @@ def format_exc_for_journald(ex, indent_lines=False):
 
 
 def signal_handler(*_):
-    logger.debug("\nExiting...")
+    loggere.debug("\nExiting...")
     sys.exit(0)
 
 
