@@ -1,6 +1,7 @@
-cd /home/pi/NakujaN2/n2Basestation/Services/docker_backend/
+#!/usr/bin/env bash
+cd /home/pi/Nakuja/n2Basestation/Services/docker_backend/
 
-if [ "$(docker ps -f name=nakuja -l -q)" != "" ]
+if [[ "$(docker ps -f name=nakuja -l -q)" != "" ]]
 then
     make stop
 else

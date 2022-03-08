@@ -1,2 +1,3 @@
-cd /home/pi/NakujaN2/n2Basestation/Services/docker_backend/
+#!/usr/bin/env bash
+cd /home/pi/Nakuja/n2Basestation/Services/docker_backend/
 make start

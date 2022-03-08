@@ -1,10 +1,12 @@
 version: '3'
 
-services:  
+services:
   rabbitmq:
+    # This is the rabbitmq service. This will be used us our messaging broker
     build: .
     image: mqtt-rabbitmq
     container_name: nakuja-mqtt
+    # TODO set environment values as secret local environment variables
     environment:
       - RABBITMQ_ERLANG_COOKIE=sVNduj5kjHBjkRqjPk42nNKGMknVRxv3FtjmRwr4gZZ65UwZrKtZzF4abafJ
       - RABBITMQ_DEFAULT_USER=nakuja
@@ -16,6 +18,7 @@ services:
       - "1883:1883"
 
   influxdb:
+    # This is the influxdb service. This will be used us our timeseries database to stop our data
     image: arm64v8/influxdb:1.7
     container_name: nakuja-influxdb
     volumes:
@@ -25,6 +28,7 @@ services:
       - "8086:8086"
       - "8082:8082"
       - "8089:8089/udp"
+    # TODO set environment values as secret local environment variables
     environment:
       - INFLUXDB_DB=db0
       - INFLUXDB_ADMIN_USER=nakuja
@@ -32,6 +36,7 @@ services:
       - INFLUXDB_ADMIN_ENABLED=true
 
   telegraf:
+    # This is the telegraf service. This will be used us our messaging handler to read data from mqtt and send it to our database
     image: telegraf:latest
     container_name: nakuja-telegraf
     environment:
@@ -46,6 +51,7 @@ services:
       - influxdb
 
   grafana:
+    # This is the grafana service. This will be used us our backend visualisation platform
     image: grafana/grafana:latest
     container_name: nakuja-grafana
     ports:
@@ -56,7 +62,8 @@ services:
     depends_on:
       - influxdb
     links:
-    - influxdb
+      - influxdb
+    # TODO set environment values as secret local environment variables
     environment:
       - GF_SECURITY_ADMIN_USER=nakuja
       - GF_SECURITY_ADMIN_PASSWORD=SJfhaWq5DpQYn8hGjPuJQR2TeBv5CW
@@ -64,3 +71,4 @@ services:
       - GF_SECURITY_ALLOW_EMBEDDING=true
     user: "0"
 
+# TODO set nginx as our proxy manager
