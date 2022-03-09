@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', event => {
     //calling API (iframe Chart, fire/stop ignition)
-    const baseUrl = "127.0.0.1:8000/api";
+    const baseUrl = "127.0.0.1:5000/api";
 
     //ignition status
     const ignitionStatus = document.getElementById('ignitionStatus');
