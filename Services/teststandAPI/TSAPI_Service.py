@@ -7,6 +7,7 @@ from lib import format_exc_for_journald, setup_logging, signalhandler, check_run
 import flask
 from flask import jsonify
 import logging
+import RPi.GPIO as GPIO
 
 app = flask.Flask(__name__)
 log = logging.getLogger('werkzeug')
@@ -65,6 +66,7 @@ def start_ignition():
 @app.route('/api/stop_ignition', methods=['GET'])
 def stop_ignition():
     resp = ops.stopignition()
+    GPIO.output(19, GPIO.HIGH)
     return jsonify(resp)
 
 
