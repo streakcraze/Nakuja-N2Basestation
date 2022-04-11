@@ -63,7 +63,8 @@ class Publisher:
                                   transport="tcp")
         self.client.on_connect = self.on_connect
         self.client.on_publish = self.on_publish
-        self.client.username_pw_set(username=self.MQTT_USER, password=self.MQTT_PASSWORD)
+        self.client.username_pw_set(
+            username=self.MQTT_USER, password=self.MQTT_PASSWORD)
         self.client.connect(self.MQTT_ADDRESS, self.MQTT_PORT, 10)
         self.logger.info("CONNECTED TO MQTT")
 
@@ -88,16 +89,19 @@ class Operation:
         """
         Start Ignition
         """
-        if not self.ignition:
-            if not self.logging:
-                response = {"error": "Start logging first", "redirect": "/api/start_logging"}
-            else:
+        if self.ignition:
+            response = {"message": "Ignition already started",
+                        "ignition status": str(self.ignition)}
+        else:
+            if self.logging:
                 self.ignition = True
-                response = {"action": "Started ignition", "ignition status": str(self.ignition)}
+                response = {"message": "Started ignition",
+                            "ignition status": str(self.ignition)}
                 self.logger.info("Started ignition")
                 self.publisher.publish(data=response)
-        else:
-            response = {"action": "Ignition already started", "ignition status": str(self.ignition)}
+            else:
+                response = {"message": "Start logging first",
+                            "redirect": "/api/start_logging"}
         return response
 
     def stopignition(self):
@@ -105,12 +109,18 @@ class Operation:
         Stops Ignition
         """
         if self.ignition:
-            self.ignition = False
-            response = {"action": "Stopped ignition", "ignition status": str(self.ignition)}
-            self.logger.info("Stopped ignition")
-            self.publisher.publish(data=response)
+            if self.logging:
+                response = {"message": "Stop logging first",
+                            "redirect": "/api/stop_logging"}
+            else:
+                self.ignition = False
+                response = {"message": "Stopped ignition",
+                            "ignition status": str(self.ignition)}
+                self.logger.info("Stopped ignition")
+                self.publisher.publish(data=response)
         else:
-            response = {"action": "Ignition already stopped", "ignition status": str(self.ignition)}
+            response = {"message": "Ignition not started",
+                        "ignition status": str(self.ignition)}
         return response
 
     def startlogging(self):
@@ -119,11 +129,13 @@ class Operation:
         """
         if not self.logging:
             self.logging = True
-            response = {"action": "Started logging", "logging status": str(self.logging)}
+            response = {"message": "Started logging",
+                        "logging status": str(self.logging)}
             self.logger.info("Started logging")
             self.publisher.publish(data=response)
         else:
-            response = {"action": "Logging already started", "logging status": str(self.logging)}
+            response = {"message": "Logging already started",
+                        "logging status": str(self.logging)}
         return response
 
     def stoplogging(self):
@@ -132,9 +144,11 @@ class Operation:
         """
         if self.logging:
             self.logging = False
-            response = {"action": "Stopped logging", "logging status": str(self.logging)}
+            response = {"message": "Stopped logging",
+                        "logging status": str(self.logging)}
             self.logger.info("Stopped logging")
             self.publisher.publish(data=response)
         else:
-            response = {"action": "Logging already stopped", "logging status": str(self.logging)}
+            response = {"message": "Logging already stopped",
+                        "logging status": str(self.logging)}
         return response

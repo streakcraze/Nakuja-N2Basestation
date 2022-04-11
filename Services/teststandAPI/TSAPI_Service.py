@@ -5,11 +5,13 @@ import time
 from main import Operation
 from lib import format_exc_for_journald, setup_logging, signalhandler, check_running_instance
 import flask
-from flask import jsonify
+from flask import jsonify, render_template
+# from flask_cors import CORS
 import logging
 import RPi.GPIO as GPIO
 
 app = flask.Flask(__name__)
+# CORS(app)
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 log.disabled = True
@@ -22,7 +24,8 @@ if "DEBUG" in os.environ:
     elif os.environ["DEBUG"].lower() == "false":
         DEBUG = False
     else:
-        raise ValueError("DEBUG environment variable not set to 'true' or 'false'")
+        raise ValueError(
+            "DEBUG environment variable not set to 'true' or 'false'")
 else:
     if os.isatty(sys.stdin.fileno()):
         DEBUG = True
@@ -54,7 +57,7 @@ def api_all():
            {"endpoint": "/api/start_logging", "description": "starts logging"},
            {"endpoint": "/api/stop_logging", "description": "stops logging"}
            ]
-    return jsonify(val)
+    return render_template("index.html", val=jsonify(val))
 
 
 @app.route('/api/start_ignition', methods=['GET'])
@@ -89,5 +92,6 @@ while True:
     except UserWarning as warn:
         logger.error(warn)
     else:
-        logger.error(format_exc_for_journald(traceback.format_exc(), indent_lines=False))
+        logger.error(format_exc_for_journald(
+            traceback.format_exc(), indent_lines=False))
         time.sleep(10)
